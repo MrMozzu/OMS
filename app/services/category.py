@@ -74,7 +74,7 @@ class CategoryService:
         ):
             raise ValueError("Category already exists")
 
-        cateogory.name = name
+        category.name = name
 
         try: 
             await self.session.commit()
@@ -82,10 +82,29 @@ class CategoryService:
             return category
         
         except Exception:
-            
+
             await self.session.rollback
             return category
 
    
+    async def delete_category(
+        self,
+        cateogory_id: int
+    ) -> None:
+
+        category = await self.repository.get_by_id(category_id)
+
+        if not category:
+            raise ValueError("Category not found")
+        
+        await self.repository.delete(category)
+
+        try:
+            await self.session.commit()
+
+        except Exception:
+            await self.session.rollback()
+            raise 
+
 
         
