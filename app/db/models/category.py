@@ -3,8 +3,8 @@ from sqlalchemy import String
 from app.db.base import Base
 
 
-class Cateogory(Base):
-    __tablename__ = "cateogories"
+class Category(Base):
+    __tablename__ = "categories"
 
     id: Mapped[int] = mapped_column(primary_key=True)
 
@@ -15,8 +15,6 @@ class Cateogory(Base):
     )
 
     products: Mapped[list["Product"]] = relationship(
-        back_populates="cateogory",
+        back_populates="category",
         cascade="all, delete-orphan"
     )
-
-

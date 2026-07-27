@@ -1,20 +1,20 @@
 from sqlalchemy import select
 
-from app.db.models.cateogory import Cateogory
+from app.db.models.category import Category
 from app.repositories.base import BaseRepository
 
-class CateogoryRepository(
-    BaseRepository[Cateogory]
+class CategoryRepository(
+    BaseRepository[Category]
 ):
 
     async def get_by_id(
         self,
-        cateogory_id: int,
-    ) -> Cateogory | None:
+        category_id: int,
+    ) -> Category | None:
 
         stmt = (
-            select(Cateogory)
-            .where(Cateogory.id == cateogory_id)
+            select(Category)
+            .where(Category.id == category_id)
         )
 
         result = await self.session.execute(stmt)
@@ -25,11 +25,11 @@ class CateogoryRepository(
     async def get_by_name(
         self, 
         name: str
-    ) -> Cateogory | None:
+    ) -> Category | None:
 
         stmt = (
-            select(Cateogory)
-            .where(Cateogory.name == name)
+            select(Category)
+            .where(Category.name == name)
         )
         result = await self.session.execute(stmt)
 
@@ -38,24 +38,21 @@ class CateogoryRepository(
 
     async def create(
         self, 
-        cateogory: Cateogory,
-    ) -> Cateogory:
+        category: Category,
+    ) -> Category:
         
-        self.session.add(cateogory)
+        self.session.add(category)
 
         await self.session.flush()
-        await self.session.refresh(cateogory)
+        await self.session.refresh(category)
 
-        return cateogory
+        return category
 
 
     async def delete(
         self,
-        cateogory: Cateogory
+        category: Category
     ) -> None:
         
-        await self.session.delete(cateogory)
+        await self.session.delete(category)
         await self.session.flush()
-        
-    
-    

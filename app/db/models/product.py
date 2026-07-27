@@ -1,4 +1,4 @@
-from app.db.models.cateogory import Cateogory
+from app.db.models.category import Category
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from sqlalchemy import ForeignKey
 from app.db.base import Base
@@ -15,12 +15,12 @@ class Product(Base):
 
     price: Mapped[float]
 
-    cateogory_id: Mapped[int] = mapped_column(
-        ForeignKey("cateogories.id"),
+    category_id: Mapped[int] = mapped_column(
+        ForeignKey("categories.id"),
         nullable=False
     )
 
-    cateogory: Mapped["Cateogory"] = relationship(
+    category: Mapped["Category"] = relationship(
         back_populates="products"
     )
 
