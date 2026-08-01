@@ -3,6 +3,8 @@ from sqlalchemy import select
 from app.db.models.category import Category
 from app.repositories.base import BaseRepository
 
+
+
 class CategoryRepository(
     BaseRepository[Category]
 ):

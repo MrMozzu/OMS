@@ -8,7 +8,7 @@ class CategoryCreate(BaseModel):
     )
 
 
-class CateogoryUpdate(BaseModel):
+class CategoryUpdate(BaseModel):
 
         name: str | None = Field(
             default=None,

@@ -1,6 +1,7 @@
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.exceptions import CategoryAlreadyExists, CategoryNotFound
 from app.db.models.category import Category
 from app.repositories.category import CategoryRepository
 
@@ -24,10 +25,8 @@ class CategoryService:
         exists = await self.repository.get_by_name(name)
 
         if exists:
-            raise ValueError(
-                "Category already exists"
-            )
-
+            raise CategoryAlreadyExists()
+            
         category = Category(
             name=name
         )
@@ -53,9 +52,7 @@ class CategoryService:
             return category
         
         else:
-            raise ValueError(
-                "Category does not exist"
-            )
+            raise CategoryNotFound()
 
        
     async def update_category(
@@ -64,15 +61,15 @@ class CategoryService:
         name: str
     ) -> Category:
 
-        category = await self.get_by_id(category_id)
+        category = await self.get_category(category_id)
 
-        existing = await self.get_by_name(name)
+        existing = await self.repository.get_by_name(name)
 
         if (
             existing and 
             existing.id != category.id
         ):
-            raise ValueError("Category already exists")
+            raise CategoryAlreadyExists()
 
         category.name = name
 
@@ -83,19 +80,19 @@ class CategoryService:
         
         except Exception:
 
-            await self.session.rollback
-            return category
+            await self.session.rollback()
+            raise
 
    
     async def delete_category(
         self,
-        cateogory_id: int
+        category_id: int
     ) -> None:
 
         category = await self.repository.get_by_id(category_id)
 
         if not category:
-            raise ValueError("Category not found")
+            raise CategoryNotFound()
         
         await self.repository.delete(category)
 
