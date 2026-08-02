@@ -9,8 +9,6 @@ class ProductCreate(BaseModel):
 
     name: str
 
-    description: str | None = None
-
     price: Decimal 
 
     stock: int
