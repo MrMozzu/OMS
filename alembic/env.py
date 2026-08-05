@@ -8,7 +8,7 @@ from alembic import context
 
 from app.core.config import settings
 from app.db.base import Base
-from app.db.models.category import Category  # Import models to populate metadata
+import app.db.models  # Import all models to populate metadata
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

@@ -2,12 +2,14 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.models.product import Product 
+from app.db.models.product import Product 
+from app.repositories.base import BaseRepository
 
 
 class ProductRepository(
     BaseRepository[Product]
 ):
+
 
     async def create(
         self,
@@ -60,7 +62,7 @@ class ProductRepository(
 
         statement = (
             select(Product)
-            .options(selectinload(Product.category))
+            .options(selectinload(Product.category)) # to get the related categories
             .where(Product.id == product_id)
         )
 
@@ -79,6 +81,16 @@ class ProductRepository(
         result = await self.session.execute(statement)
 
         return list(result.scalar().all())
+
+    
+    async def update(
+        self,
+        product: Product
+    ) -> Product:
+
+        await self.session.flush()
+        await self.session.refresh(product)
+        return product
 
 
     async def delete(

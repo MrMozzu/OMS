@@ -13,7 +13,7 @@ class ProductCreate(BaseModel):
 
     stock: int
 
-    category_id = int
+    category_id: int
 
 
 
@@ -40,7 +40,7 @@ class ProductResponse(BaseModel):
 
     name: str
 
-    description: str | None
+    description: str | None = None
 
     price: Decimal
 
